@@ -88,8 +88,6 @@ export const updateUser = async (req, res) => {
       address: req.body.address,
       role: req.body.role
     }
-    console.log(req.params.id)
-    console.log(req.body)
     const result = await users.findByIdAndUpdate(req.params.id, data, { new: true })
     delete result.password
     res.status(200).send({ success: true, message: '', result })
@@ -100,7 +98,7 @@ export const updateUser = async (req, res) => {
       return res.status(400).send({ success: false, message })
     } else {
       console.log(error)
-      res.status(500).send({ success: false, message: '伺服器錯誤(editUser)' })
+      res.status(500).send({ success: false, message: '伺服器錯誤(updateUser)' })
     }
   }
 }

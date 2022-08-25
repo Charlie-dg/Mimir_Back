@@ -8,9 +8,12 @@ const schema = new mongoose.Schema({
   description: {
     type: String
   },
-  profile: {
+  avatar: {
+    type: String
+  },
+  portfolio: {
     type: [String]
   }
-})
+}, { versionKey: false })
 
 export default mongoose.model('designer', schema)
