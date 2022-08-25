@@ -20,6 +20,28 @@ export const createOrder = async (req, res) => {
   }
 }
 
+export const deleteOrder = async (req, res) => {
+  try {
+    const result = await orders.findByIdAndDelete(req.params.id)
+    if (result === null) {
+      res.status(404)
+      res.send({ success: false, message: '找不到資料' })
+    } else {
+      res.status(200)
+      res.send({ success: true, message: '' })
+    }
+  } catch (error) {
+    // 若 ID 格式不是 mongodb 格式
+    if (error.name === 'CastError') {
+      res.status(404)
+      res.send({ success: false, message: '找不到資料' })
+    } else {
+      res.status(500)
+      res.send({ success: false, message: '伺服器錯誤(deleteUser)' })
+    }
+  }
+}
+
 export const getMyOrders = async (req, res) => {
   try {
     const result = await orders.find({ user: req.user._id }).populate('products.product')

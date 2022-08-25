@@ -1,5 +1,4 @@
 import users from '../models/users.js'
-// import products from '../models/products'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import products from '../models/products.js'
@@ -75,6 +74,65 @@ export const extend = async (req, res) => {
     res.status(200).send({ success: true, message: '', result: token })
   } catch (error) {
     res.status(500).send({ success: false, message: '伺服器錯誤(extend)' })
+  }
+}
+
+export const updateUser = async (req, res) => {
+  try {
+    const data = {
+      account: req.body.account,
+      name: req.body.name,
+      gender: req.body.gender,
+      phone: req.body.phone,
+      email: req.body.email,
+      address: req.body.address,
+      role: req.body.role
+    }
+    console.log(req.params.id)
+    console.log(req.body)
+    const result = await users.findByIdAndUpdate(req.params.id, data, { new: true })
+    delete result.password
+    res.status(200).send({ success: true, message: '', result })
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      const key = Object.keys(error.errors)[0]
+      const message = error.errors[key].message
+      return res.status(400).send({ success: false, message })
+    } else {
+      console.log(error)
+      res.status(500).send({ success: false, message: '伺服器錯誤(editUser)' })
+    }
+  }
+}
+
+export const deleteUser = async (req, res) => {
+  try {
+    const result = await users.findByIdAndDelete(req.params.id)
+    if (result === null) {
+      res.status(404)
+      res.send({ success: false, message: '找不到資料' })
+    } else {
+      res.status(200)
+      res.send({ success: true, message: '' })
+    }
+  } catch (error) {
+    // 若 ID 格式不是 mongodb 格式
+    if (error.name === 'CastError') {
+      res.status(404)
+      res.send({ success: false, message: '找不到資料' })
+    } else {
+      res.status(500)
+      res.send({ success: false, message: '伺服器錯誤(deleteUser)' })
+    }
+  }
+}
+
+export const getAllUser = async (req, res) => {
+  try {
+    const result = await users.find()
+    res.status(200).send({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).send({ success: false, message: '伺服器錯誤(getAllUser)' })
   }
 }
 

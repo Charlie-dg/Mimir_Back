@@ -5,6 +5,7 @@ import admin from '../middleware/admin.js'
 import upload from '../middleware/upload.js'
 import {
   createProduct,
+  deleteProduct,
   getProducts,
   getAllProducts,
   getProduct,
@@ -14,6 +15,7 @@ import {
 const router = express.Router()
 
 router.post('/', content('multipart/form-data'), auth.jwt, admin, upload, createProduct)
+router.delete('/:id', auth.jwt, admin, deleteProduct)
 router.get('/', getProducts)
 router.get('/all', auth.jwt, admin, getAllProducts)
 router.get('/:id', getProduct)

@@ -3,6 +3,7 @@ import admin from '../middleware/admin.js'
 import * as auth from '../middleware/auth.js'
 import {
   createOrder,
+  deleteOrder,
   getMyOrders,
   getAllOrders
 } from '../controllers/orders.js'
@@ -10,7 +11,8 @@ import {
 const router = express.Router()
 
 router.post('/', auth.jwt, createOrder)
+router.delete('/:id', auth.jwt, admin, deleteOrder)
 router.get('/', auth.jwt, getMyOrders)
-router.get('/', auth.jwt, admin, getAllOrders)
+router.get('/all', auth.jwt, admin, getAllOrders)
 
 export default router

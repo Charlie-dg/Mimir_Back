@@ -21,7 +21,6 @@ const schema = new mongoose.Schema({
   },
   gender: {
     type: String
-
   },
   phone: {
     type: Number,
@@ -44,8 +43,8 @@ const schema = new mongoose.Schema({
     maxlength: [50, '地址必須 50 個字以下']
   },
   role: {
-    type: Number,
-    default: 0 // 0 = 使用者, 1 = 管理員
+    type: String, // 會員, 管理員
+    default: '會員'
   },
   cart: {
     type: [
