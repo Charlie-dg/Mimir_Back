@@ -13,7 +13,11 @@ const schema = new mongoose.Schema({
   },
   portfolio: {
     type: [String]
+  },
+  publish: {
+    type: Boolean,
+    default: false
   }
 }, { versionKey: false })
 
-export default mongoose.model('designer', schema)
+export default mongoose.model('designers', schema)

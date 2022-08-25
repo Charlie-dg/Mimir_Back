@@ -67,7 +67,7 @@ export const getProduct = async (req, res) => {
     const result = await products.findById(req.params.id)
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
-    res.status(500).send({ success: false, message: '伺服器錯誤(getProducts)' })
+    res.status(500).send({ success: false, message: '伺服器錯誤(getProduct)' })
   }
 }
 
@@ -81,6 +81,9 @@ export const editProduct = async (req, res) => {
       sell: req.body.sell
     }
     if (req.file) data.image = req.file.path
+    console.log('req.file.path : ', req.file.path)
+    console.log('req.file : ', req.file)
+    console.log('req.files : ', req.files)
     const result = await products.findByIdAndUpdate(req.params.id, data, { new: true })
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
