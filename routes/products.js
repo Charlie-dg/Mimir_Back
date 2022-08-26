@@ -2,23 +2,23 @@ import express from 'express'
 import content from '../middleware/content.js'
 import * as auth from '../middleware/auth.js'
 import admin from '../middleware/admin.js'
-import upload from '../middleware/upload.js'
+import * as upload from '../middleware/upload.js'
 import {
   createProduct,
+  updateProduct,
   deleteProduct,
-  getProducts,
   getAllProducts,
-  getProduct,
-  editProduct
+  getProducts,
+  getProduct
 } from '../controllers/products.js'
 
 const router = express.Router()
 
-router.post('/', content('multipart/form-data'), auth.jwt, admin, upload, createProduct)
+router.post('/', content('multipart/form-data'), auth.jwt, admin, upload.single, createProduct)
+router.patch('/:id', content('multipart/form-data'), auth.jwt, admin, upload.single, updateProduct)
 router.delete('/:id', auth.jwt, admin, deleteProduct)
-router.get('/', getProducts)
 router.get('/all', auth.jwt, admin, getAllProducts)
+router.get('/', getProducts)
 router.get('/:id', getProduct)
-router.patch('/:id', content('multipart/form-data'), auth.jwt, admin, upload, editProduct)
 
 export default router

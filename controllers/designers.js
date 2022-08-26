@@ -2,13 +2,19 @@ import designers from '../models/designers.js'
 
 export const createDesigner = async (req, res) => {
   try {
-    const result = await designers.create({
+    const data = {
       name: req.body.name,
       description: req.body.description,
-      avatar: req.files?.path || '',
-      portfolio: req.files?.path || '',
+      avatar: req.files?.avatar[0].path || '',
+      portfolio: [],
       publish: req.body.publish
-    })
+    }
+    if (req.files.portfolio) {
+      for (const i in req.files.portfolio) {
+        data.portfolio[i] = req.files.portfolio[i].path
+      }
+    }
+    const result = await designers.create(data)
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     if (error.name === 'ValidationError') {
@@ -45,20 +51,33 @@ export const deleteDesigner = async (req, res) => {
 
 export const updateDesigner = async (req, res) => {
   try {
-    const data = {
-      name: req.body.name,
-      description: req.body.description,
-      publish: req.body.publish
+    if (req.files.portfolio) {
+      const data = {
+        name: req.body.name,
+        description: req.body.description,
+        publish: req.body.publish,
+        portfolio: []
+      }
+      if (req.files.avatar) data.avatar = req.files.avatar[0].path
+      for (const i in req.files.portfolio) {
+        data.portfolio[i] = req.files.portfolio[i].path
+      }
+      console.log('data: ', data)
+      const result = await designers.findByIdAndUpdate(req.params.id, data, { new: true })
+      res.status(200).send({ success: true, message: '', result })
+      console.log('result: ', result)
+    } else {
+      const data = {
+        name: req.body.name,
+        description: req.body.description,
+        publish: req.body.publish
+      }
+      if (req.files.avatar) data.avatar = req.files.avatar[0].path
+      console.log('data: ', data)
+      const result = await designers.findByIdAndUpdate(req.params.id, data, { new: true })
+      res.status(200).send({ success: true, message: '', result })
+      console.log('result: ', result)
     }
-    if (req.files) {
-      // data.avatar = req.files.path
-      data.portfolio = req.files.path
-    }
-    console.log('req.file.path : ', req.file.path)
-    console.log('req.file : ', req.file)
-    console.log('req.files : ', req.files)
-    const result = await designers.findByIdAndUpdate(req.params.id, data, { new: true })
-    res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
