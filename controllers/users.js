@@ -141,7 +141,11 @@ export const getUser = (req, res) => {
       message: '',
       result: {
         account: req.user.account,
+        name: req.user.name,
+        gender: req.user.gender,
+        phone: req.user.phone,
         email: req.user.email,
+        address: req.user.address,
         cart: req.user.cart.length,
         role: req.user.role
       }
