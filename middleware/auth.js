@@ -21,9 +21,9 @@ export const jwt = (req, res, next) => {
       if (info instanceof jsonwebtoken.JsonWebTokenError) {
         return res.status(401).send({ success: false, message: '驗證錯誤(jwt)' })
       } else {
-        console.log(err)
-        console.log(data)
-        console.log(req.token)
+        console.log('err: ', err)
+        console.log('data: ', data)
+        console.log('req.token: ', req.token)
         return res.status(401).send({ success: false, message: info.message })
       }
     }
