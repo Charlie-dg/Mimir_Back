@@ -186,6 +186,10 @@ export const addCart = async (req, res) => {
 
 export const editCart = async (req, res) => {
   try {
+    // console.log('editCart: ')
+    // console.log('req.user._id: ', req.user._id)
+    // console.log('req.body.product: ', req.body.product)
+    // console.log('req.body.quantity: ', req.body.quantity)
     if (req.body.quantity <= 0) {
       await users.findOneAndUpdate(
         { _id: req.user._id, 'cart.product': req.body.product },
@@ -207,6 +211,7 @@ export const editCart = async (req, res) => {
     }
     res.status(200).send({ success: true, message: '' })
   } catch (error) {
+    // console.log('editCart error: ', error)
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
       const message = error.errors[key].message

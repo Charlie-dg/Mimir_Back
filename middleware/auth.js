@@ -27,6 +27,7 @@ export const jwt = (req, res, next) => {
         return res.status(401).send({ success: false, message: info.message })
       }
     }
+    // console.log('jwt data.user: ', data.user)
     req.user = data.user
     req.token = data.token
     next()

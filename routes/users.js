@@ -24,11 +24,12 @@ router.post('/login', content('application/json'), auth.login, login)
 router.delete('/logout', auth.jwt, logout)
 router.delete('/:id', auth.jwt, admin, deleteUser)
 router.post('/extend', auth.jwt, extend)
-router.patch('/:id', content('multipart/form-data'), auth.jwt, admin, upload.single, updateUser)
+
 router.get('/', auth.jwt, getUser)
 router.get('/all', auth.jwt, getAllUser)
 router.post('/cart', content('application/json'), auth.jwt, addCart)
 router.patch('/cart', content('application/json'), auth.jwt, editCart)
 router.get('/cart', auth.jwt, getCart)
+router.patch('/:id', content('multipart/form-data'), auth.jwt, admin, upload.single, updateUser)
 
 export default router
